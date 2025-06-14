@@ -35,7 +35,6 @@ domain_agent_color      = "#DAB989"
 search_agent_color      = "#8BA297"
 decision_agent_color    = "#788BAA"
 retrieval_agent_color   = "#B5C5DE"
-rank_agent_color        = "#C9A4BE"
 
 
 def show_content(content, color=default_color):
@@ -51,8 +50,6 @@ def show_content(content, color=default_color):
         color = decision_agent_color
     elif content.startswith("[Retrieval Agent]"):
         color = retrieval_agent_color
-    elif content.startswith("[Rank Agent]"):
-        color = Rank_agent_color
     global_conversation_list.append({"color": color, "text": content.replace("\n", "<br>")})
     print("global_conversation_list", global_conversation_list)
     return
@@ -109,16 +106,6 @@ def problem_conceptualization(input_battery, condition, task_index):
             prompt += "These invalid batteries are:\n" + "".join(prompt_list)
 
         prompt += "When replacing the invalid or existing compositions, you can replace the newly added elements with elements of lower atomic mass; and adjust the ratio of existing elements; and introduce new elements. The new compositions must be stable and have a higher capacity. The final outputs should include newly generated valid compositions, skip the retrieved batteries, and be listed in bullet points (in asterisk *, not - or number or any other symbol)."
-
-
-
-    elif mode == "rank":
-        generated_battery_list = condition[1] # [ battery 1, battery 2, battery 3, ...]
-
-        prompt = "You generated the following valid battery:\n"
-        for battery in generated_battery_list:
-            prompt += "* {}\n".format(battery)
-        prompt += "Can you give four rankings over these batteries based on stability, cycle, cost, and synthesizability, respectively?"
 
 
     else:
@@ -390,34 +377,6 @@ def index():
             show_content("\n\n")
 
 
-
-        elif "button5.1" in request.form:
-            show_content("========== Step 5. Hypothesis Ranking ==========")
-
-            input_battery = global_input_battery_list[-1]
-            generated_battery_list = global_generated_battery_list[-1]
-            condition = ("rank", generated_battery_list)
-            global_condition_list.append(condition)
-
-            prompt = problem_conceptualization(condition=condition, input_battery=input_battery, task_index=task_index)
-
-            content = "[Human Agent]\n" + prompt + "\n"
-            show_content(content)
-
-            if args['LLM_type'] in ["chatgpt_3.5"]:
-                global_LLM_messages = [{"role": "system", "content": "You are an expert in the field of material and chemistry."}]
-            else:
-                global_LLM_messages = []
-            global_LLM_messages.append({"role": "user", "content": prompt})
-
-            ranking_result_text = LLM_Agent.rank_batteries(global_LLM_messages, args['LLM_type'])
-
-            content = "[LLM Agent]\n" + ranking_result_text + "\n\n\n"
-            show_content(content)
-
-            default_textarea = "Ranking results by LLM."
-
-
         else:
             response_message = "Please enter your next input battery for editing:"
 
@@ -436,7 +395,6 @@ if __name__ == "__main__":
     parser.add_argument('--LLM_type', required=False, type=str, default='chatgpt_3.5', choices=["chatgpt_3.5", "chatgpt_o1", "chatgpt_o3"], help='only support chatgpt now')
     parser.add_argument('--input_battery_file', required=False, type=str, default='data/Li_battery/input_formula.txt')
     parser.add_argument('--output_battery_file', required=False, type=str, default='results/output_formula.txt')
-    parser.add_argument('--input_output_battery_file', required=False, type=str, default='results/input_output_formula.txt')
     parser.add_argument('--log_file', required=False, type=str, default='results/Chatbattery.log', help='saved log file name')
     parser.add_argument('--record_file', required=False, type=str, default='results/Chatbattery.json', help='saved record file name')
     parser.add_argument('--constraint', required=False, type=str, default='loose', help='loose or strict')
@@ -447,7 +405,6 @@ if __name__ == "__main__":
 
     task_index = args['task_index']
     outputfile = open(args['output_battery_file'], 'w')
-    input_output_battery_file = open(args['input_output_battery_file'], 'w')
 
     # load dataset
     retrieval_DB = load_retrieval_DB(task_index)
