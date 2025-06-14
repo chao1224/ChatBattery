@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update on Interaction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        /* 使用 Flexbox 实现左右布局 */
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* 左侧内容区域占据 75% */
+        .content {
+            width: 65%;
+        }
+
+        /* 右侧图片区域占据 25% */
+        .image {
+            width: 40%;
+            text-align: center;
+        }
+
+        #content-list {
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f9f9f9;
+            max-height: 700px; /* 设置最大高度 */
+            height: 600px;
+            overflow-y: auto;  /* 允许滚动 */
+        }
+
+        div .button-container {
+            display: inline-block; /* 让 div 在一行内显示 */
+            background-color: #B7B2D040;  /* 最后的80表示50%透明度 */
+            padding: 20px; /* 上下左右都设置为 10px */
+            text-align: center; /* 将 div 内的所有文本和内联元素水平居中 */
+            color: #B7B2D0;           /* 设置字体颜色 */
+            font-size: 20px;       /* 设置字体大小 */
+            border-radius: 10px;
+        }
+
+        textarea {
+            width: 750px;
+            height: 150px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            text-align: left; /* 确保文本靠左 */
+            vertical-align: top; /* 控制垂直位置 */
+            text-indent: 0; /* 确保没有首行缩进 */
+        }
+
+        button {
+            font-size: 16px;
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .content-item {
+            margin-bottom: 5px;
+        }
+
+        .highlight {
+            color: #007BFF;
+            font-weight: bold;
+        }
+    </style>
+    
+    <script>
+        window.onload = function() {
+            // 页面加载时，默认点击Button0
+            document.getElementById("button0").click();
+        };
+
+        // 页面加载完成后自动滚动到页面底部
+        window.onload = function() {
+            var contentList = document.getElementById("content-list");
+            contentList.scrollTop = contentList.scrollHeight;
+        };
+    </script>
+</head>
+
+<body>
+    <h1>ChatBattery</h1>
+
+    <div class="container">
+        <!-- 左侧文章内容区域 -->
+        <div class="content">
+            <div id="content-list">
+                {% for item in content_list %}
+                    {% if item.text %}
+                        <div class="content-item" style="color: {{ item.color }};">
+                            {{ item.text | safe }}
+                        </div>
+                    {% else %}
+                        <h3>Content List: {{ item.material }}</h3>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            
+            <br>
+            <br>
+            <form method="POST">
+                <button type="submit" name="button0" style="background-color: black">Start A New Battery Editing</button>                    
+                <br>
+                <br>
+                <b>Instructions or Prompts:</b><br>
+                {% if not render_in_textarea %}
+                    <textarea name="content_input" placeholder="{{ default_textarea }}" id="content-input"></textarea>
+                {% else %}
+                <textarea name="content_input" id="content-input">
+{{ default_textarea | safe }}
+                </textarea>
+                {% endif %}
+                <br>
+                <br>
+                <div class="button-container">
+                    <b>Step 1</b><hr>
+                    <button type="submit" name="button1.1" style="background-color: #B7B2D0">Step 1.1<br>Start Prompt</button>
+                    <button type="submit" name="button1.2" style="background-color: #B7B2D0">Step 1.2<br>Update and Confirm</button>
+                </div>
+                <div class="button-container">
+                    <b>Step 2</b><hr>
+                    <button type="submit" name="button2.1" style="background-color: #AC7572">Step 2.1<br>Optimize</button>
+                    <button type="submit" name="button2.2" style="background-color: #B7B2D0">Step 2.2<br>Extract</button>
+                    <button type="submit" name="button2.3" style="background-color: #B7B2D0">Step 2.3<br>Update and Confirm</button>
+                </div>
+
+                <div class="button-container">
+                    <b>Step 3</b><hr>
+                    <button type="submit" name="button3.1" style="background-color: #8BA297">Step 3.1<br>Search</button>
+                </div>
+
+                <div class="button-container">
+                    <b>Step 4</b><hr>
+                    <button type="submit" name="button4.1" style="background-color: #788BAA">Step 4.1<br>Decision</button>                    
+                </div>
+
+                <div class="button-container">
+                    <b>Step 5</b><hr>
+                    <button type="submit" name="button5.1" style="background-color: #C9A4BE">Step 5.1<br>Rank</button>                    
+                </div>
+            </form>
+
+        </div>
+
+        <!-- 右侧图片区域 -->
+        <div class="image">
+            <img src="https://chao1224.github.io/projects/2025_ChatBattery/pipeline_02.png" alt="Pipeline figure of ChatBattery" width="100%">
+        </div>
+
+    </div>
+</body>
+</html>
