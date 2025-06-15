@@ -31,24 +31,26 @@ Then run `python preprocess.py`, and output is a CSV file.
 
 ### 3 Run Scripts
 
-#### Phase 1 Exploration
+First export the open AI, `export OPENAI_API_KEY=xxxxx`.
 
-Run this CMD:
+#### 3.1 Exploration Phase
+
+For stage 1 to 4, run this CMD
 ```bash
 python main.py
 ```
 
-##### Phase 2 Exploitation
+##### 3.2 Exploitation Phase
 
 - Stage 5, first please get prepared the input file
 ```bash
 cd step_05_deduplication
 python step_05_deduplication.py --input_file=xxx
 ```
+
 - Stage 6, then run the following CMD
 ```bash
 cd step_06_ranking
 bash step_06_ranking.sh
 ```
-
 

@@ -390,7 +390,6 @@ def index():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    # required arguments
     parser.add_argument('--task_index', required=False, type=int, default=101)
     parser.add_argument('--LLM_type', required=False, type=str, default='chatgpt_3.5', choices=["chatgpt_3.5", "chatgpt_o1", "chatgpt_o3"], help='only support chatgpt now')
     parser.add_argument('--input_battery_file', required=False, type=str, default='data/Li_battery/input_formula.txt')
@@ -406,7 +405,6 @@ if __name__ == "__main__":
     task_index = args['task_index']
     outputfile = open(args['output_battery_file'], 'w')
 
-    # load dataset
     retrieval_DB = load_retrieval_DB(task_index)
 
     num_correct = 0
