@@ -29,8 +29,6 @@ class Retrieval_Agent:
 
             if answer:
                 print()
-                # print("the most distant and correct battery: {} (to input battery {} and generated battery {})".format(retrieved_battery, input_battery, generated_battery))
-                # print("answer", answer)
                 return retrieved_battery, output_value
         raise Exception("Sorry, cannot fined a good formula.")
 

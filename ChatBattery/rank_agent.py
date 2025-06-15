@@ -91,8 +91,8 @@ class Rank_Agent:
             if len(arr) <= 1:
                 return arr
             mid = len(arr) // 2
-            left = merge_sort(arr[:mid])  # 递归左半部分
-            right = merge_sort(arr[mid:])  # 递归右半部分
+            left = merge_sort(arr[:mid])
+            right = merge_sort(arr[mid:])
             return merge(left, right)
 
         sorted_formula_list = merge_sort(formula_list)

@@ -14,7 +14,6 @@ def parse(raw_text, history_battery_list):
         line = line.split(" ")
         
         output_formula_list = []
-        # This part is a little hacky.
         for word in line:
             upper_alpha_count, digit_count = 0, 0
             for char in word:
@@ -23,7 +22,6 @@ def parse(raw_text, history_battery_list):
                 if char.isdigit():
                     digit_count += 1
             if upper_alpha_count > 1 and digit_count >= 1:
-                # If the last digit is not alphanumeric or )/]
                 if not word[-1].isalnum() and word[-1] != ")" and word[-1] != "]":
                     word = word[:-1]
                 output_formula_list.append(word)
@@ -181,6 +179,3 @@ class LLM_Agent:
         raw_generated_text = response["choices"][0]["message"]['content']
 
         return raw_generated_text
-
-if __name__ == "__main__":
-    print(parse("Input: LiMnO2  Output: - Li0.5Mn0.25Ti0.25O2", []))

@@ -22,7 +22,6 @@ def parse_formula(formula):
         return segment_counts
 
     def parse_hydrate(formula):
-        # 匹配水合物部分及其系数和误差
         match = re.search(r'(\d*\.?\d*)\((\d*)\)H2O', formula)
         if match:
             coefficient = float(match.group(1))
@@ -120,23 +119,14 @@ class Domain_Agent:
     @staticmethod
     def distance_function(task_index, formula_01, formula_02):
         count_01 = parse_formula(formula_01)
-        count_02 = parse_formula(formula_02) #这里可能不需要解析了，我把PO4拆成P和O了
+        count_02 = parse_formula(formula_02)
 
-        # total_count_01 = sum(count_01.values())
-        # for k, v in count_01.items():
-        #     count_01[k] = count_01[k] / total_count_01
-        # total_count_02 = sum(count_02.values())
-        # for k, v in count_02.items():
-        #     count_02[k] = count_02[k] / total_count_02
-
-        # TODO: need to discuss the weights
         coefficient_01 = 3   # for Li or Na
         coefficient_02 = 7   # for Mn, Co, Ni
         coefficient_03 = 5   # for Fe, Cu, Zn, V, Cr, Ti, Mo
         coefficient_04 = 10   # for O, P, F, S, Cl, Br, I
         coefficient_05 = 5   # for Mg, Al, Si, B, Zr, C, Be, Ca, Na, K, Sn, Sr
         coefficient_06 = 1   # for others
-        # transition_metal_penalty = 50 # New_1 无过渡金属加重惩罚
 
         element_level_01_set = set(["Li"])
         element_level_02_set = set(["Mn", "Co", "Ni"])
@@ -148,42 +138,35 @@ class Domain_Agent:
         distance = 0
         
         for element in element_level_01_set:
-            count_01[element] = count_01.get(element, 0) # New_2 
-            count_02[element] = count_02.get(element, 0) # New_2
+            count_01[element] = count_01.get(element, 0)
+            count_02[element] = count_02.get(element, 0)
             distance += coefficient_01 * abs(count_01[element] - count_02[element])
-            # total_weight += coefficient_01 # New_2
 
         for element in element_level_02_set:
-            count_01[element] = count_01.get(element, 0) # New_2 
-            count_02[element] = count_02.get(element, 0) # New_2
+            count_01[element] = count_01.get(element, 0)
+            count_02[element] = count_02.get(element, 0)
             distance += coefficient_02 * abs(count_01[element] - count_02[element])
-            # total_weight += coefficient_02 # New_2
 
         for element in element_level_03_set:
-            count_01[element] = count_01.get(element, 0) # New_2
-            count_02[element] = count_02.get(element, 0) # New_2
+            count_01[element] = count_01.get(element, 0)
+            count_02[element] = count_02.get(element, 0)
             distance += coefficient_03 * abs(count_01[element] - count_02[element])
-            # total_weight += coefficient_03 # New_2
 
         for element in element_level_04_set:
-            count_01[element] = count_01.get(element, 0) # New_2
-            count_02[element] = count_02.get(element, 0) # New_2
+            count_01[element] = count_01.get(element, 0)
+            count_02[element] = count_02.get(element, 0)
             distance += coefficient_04 * abs(count_01[element] - count_02[element])
-            # total_weight += coefficient_04 # New_2
 
         for element in element_level_05_set:
-            count_01[element] = count_01.get(element, 0) # New_2
-            count_02[element] = count_02.get(element, 0) # New_2
+            count_01[element] = count_01.get(element, 0)
+            count_02[element] = count_02.get(element, 0)
             distance += coefficient_05 * abs(count_01[element] - count_02[element])
-            # total_weight += coefficient_05 # New_2
 
         for element in element_level_06_set:
-            count_01[element] = count_01.get(element, 0) # New_2
-            count_02[element] = count_02.get(element, 0) # New_2
+            count_01[element] = count_01.get(element, 0)
+            count_02[element] = count_02.get(element, 0)
             distance += coefficient_06 * abs(count_01[element] - count_02[element])
-            # total_weight += coefficient_06 # New_2
 
-        # 元素个数差异 * 10
         distance += 10 * abs(len(count_01) - len(count_02))
 
         return distance
@@ -198,7 +181,6 @@ class Domain_Agent:
         element_count_01 = parse_formula(formula_01)
         element_count_02 = parse_formula(formula_02)
 
-        # if elements are different, return False
         if element_count_01.keys() != element_count_02.keys():
             return False
 
@@ -351,56 +333,3 @@ highest_oxidation_states = {
     "Li": 1, "O": -2, "Na": 1, "K": 1,
     "B": 3, "Al": 3, "Ga": 3,
 }
-
-
-if __name__ == "__main__":
-    formula_list = [
-        "Li2CoPO4F",
-        "LiCoPO4",
-        # "LiVPO4F",
-        # "LiVPO4OH",
-        # "LiVP2O7",
-        # "Li3V2(PO4)3",
-        # "LiFePO4",
-        # "LiCoO2",
-        # "LiNiO2",
-        # "LiMnO2",
-        "LiNi0.8Mn0.1Co0.1O2",
-        "LiNiMnAlO2",
-        "Na4Fe(CN)6/NaCl",
-        "Na1.88(5)Fe[Fe(CN)6]·0.18(9)H2O",
-        "NaFe[Fe(CN)6]",
-
-    ]
-    for formula in formula_list:
-        print(formula)
-        result_01 = parse_formula(formula)
-        print(result_01)
-        # result_02 = parse_formula(formula)
-        # print(result_02)
-        print()
-
-    formulat_list = [
-        "Li1.249Mg0.014Mn0.5Co0.037Ni0.2O2",
-        "Li1.166Mg0.026Mn0.333Co0.075Ni0.4O2",
-        "Li1.116Mg0.033Mn0.233Co0.098Ni0.52O2",
-        "Li1.067Mg0.04Mn0.133Co0.12Ni0.64O2",
-        
-        "Li1.2Mg0.091Si0.13Mn0.2Co0.04Ni0.23O2",
-        "Li1.2Mg0.087Si0.08Mn0.25Co0.05Ni0.28O2",
-    ]
-    for formula in formulat_list:
-        capacity = calculate_theoretical_capacity(formula, 101)
-        print(formula, capacity)
-
-    """
-    Li1.249Mg0.014Mn0.5Co0.037Ni0.2O2 406.32548197416196
-    Li1.166Mg0.026Mn0.333Co0.075Ni0.4O2 359.60351781017135
-    Li1.116Mg0.033Mn0.233Co0.098Ni0.52O2 333.7102889357721
-    Li1.067Mg0.04Mn0.133Co0.12Ni0.64O2 309.8108584181272
-    
-    Li1.2Mg0.091Si0.13Mn0.2Co0.04Ni0.23O2 440.42572326290104
-    Li1.2Mg0.087Si0.08Mn0.25Co0.05Ni0.28O2 413.4273934206137
-    """
-
-    distance_function(101, "Li1.249Mg0.014Mn0.5Co0.037Ni0.2O2PO4", "Li1.166Mg0.026Mn0.333Co0.075Ni0.4O2")
