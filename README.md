@@ -40,17 +40,25 @@ For stage 1 to 4, run this CMD
 python main.py
 ```
 
+The default address is `127.0.0.1:5000`. Simply open this address in your browser, and you will see the interface displayed like this:
+
+<p align="center">
+  <img src="static/fig/interface.png" /> 
+</p>
+
+Then please follow the instructions from stage 1 to stage 4. Enter `Ctrl + C` if you want to stop the program.
+
 ##### 3.2 Exploitation Phase
 
 - Stage 5, first please get prepared the input file
 ```bash
-cd step_05_deduplication
-python step_05_deduplication.py --input_file=xxx
+cd stage_05_deduplication
+python stage_05_deduplication.py --input_file=xxx
 ```
 
 - Stage 6, then run the following CMD
 ```bash
-cd step_06_ranking
-bash step_06_ranking.sh
+cd stage_06_ranking
+bash stage_06_ranking.sh
 ```
 
