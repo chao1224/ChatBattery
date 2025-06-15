@@ -33,7 +33,7 @@ First set the open AI key, type this in terminal `export OPENAI_API_KEY=xxxxx`.
 
 For stage 1 to 4, run this CMD in terminal
 ```bash
-python main.py
+python stage_01_04_main.py
 ```
 
 The default address is `127.0.0.1:5000`. Simply open this address in your browser, and you will see the interface displayed like this:
