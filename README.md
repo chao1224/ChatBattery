@@ -43,6 +43,7 @@ The default address is `127.0.0.1:5000`. Simply open this address in your browse
 </p>
 
 Then please follow the instructions from stage 1 to stage 4. Enter `Ctrl + C` if you want to stop the program.
+The results are collected into a csv file, which will be fed into the next stage.
 
 ##### 3.2 Exploitation Phase
 
