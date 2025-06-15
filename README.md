@@ -27,8 +27,8 @@ In our case, we download all the chemical formula including Lithium from ICSDN. 
 
 ### 3 Run Scripts
 You need to set up two keys:
-- First set the open AI key, type this in terminal `export OPENAI_API_KEY=xxxxx`.
-- Then is the MP-API key, you can change it in the file `ChatBattery/search_agent` and reset `MP_api_key = 'xxx'`.
+- First set the OpenAI API key, type this in terminal `export OPENAI_API_KEY=xxxxx`.
+- Then is the MP API key, you can change it in the file `ChatBattery/search_agent` and reset `MP_api_key = 'xxx'`.
 
 #### 3.1 Exploration Phase
 
