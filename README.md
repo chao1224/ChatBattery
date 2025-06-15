@@ -13,12 +13,11 @@ pip install openai==0.28
 pip install Levenshtein
 pip install pymatgen==2024.4.13
 pip install ase
-pip install -e .
-
 pip install scikit-learn
 pip install xgboost
 pip install mp-api==0.41.2
 pip install Flask
+pip install -e .
 ```
 
 
@@ -31,11 +30,11 @@ Then run `python preprocess.py`, and output is a CSV file.
 
 ### 3 Run Scripts
 
-First export the open AI, `export OPENAI_API_KEY=xxxxx`.
+First set the open AI key, type this in terminal `export OPENAI_API_KEY=xxxxx`.
 
 #### 3.1 Exploration Phase
 
-For stage 1 to 4, run this CMD
+For stage 1 to 4, run this CMD in terminal
 ```bash
 python main.py
 ```
