@@ -23,10 +23,7 @@ pip install -e .
 
 ### 2 Data Preprocess
 
-Download the datasets from ICSD. In our case, we download all the chemical formula including Lithium.
-
-Then run `python preprocess.py`, and output is a CSV file.
-
+In our case, we download all the chemical formula including Lithium from ICSDN. Then after preprocessing, the file is `data/Li_battery/preprocessed.csv`.
 
 ### 3 Run Scripts
 
