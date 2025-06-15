@@ -58,8 +58,6 @@ def show_content(content, color=default_color):
 def load_retrieval_DB(task_index):
     if task_index == 101:
         DBfile = 'data/Li_battery/preprocessed.csv'
-    elif task_index == 102:
-        DBfile = 'data/Na_battery/preprocessed.csv'
     else:
         raise NotImplementedError
 
@@ -352,7 +350,6 @@ def index():
                             retrieved_content = "[Retrieval Agent] Retrieved battery {} <span style=\"color:{}\">with capacity {:.3f}</span> is the most similar to the candidate optimized battery and serves as a valid optimization to the input battery.".format(
                                 retrieved_battery, domain_agent_color, retrieved_capacity)
                         except:
-                            # NOTE: This happens when the input battery has very high capacity.
                             retrieved_battery = None
                             retrieved_content = "[Retrieval Agent] No valid battery is retrieved."
                         
@@ -392,22 +389,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--task_index', required=False, type=int, default=101)
     parser.add_argument('--LLM_type', required=False, type=str, default='chatgpt_3.5', choices=["chatgpt_3.5", "chatgpt_o1", "chatgpt_o3"], help='only support chatgpt now')
-    parser.add_argument('--input_battery_file', required=False, type=str, default='data/Li_battery/input_formula.txt')
-    parser.add_argument('--output_battery_file', required=False, type=str, default='results/output_formula.txt')
-    parser.add_argument('--log_file', required=False, type=str, default='results/Chatbattery.log', help='saved log file name')
-    parser.add_argument('--record_file', required=False, type=str, default='results/Chatbattery.json', help='saved record file name')
-    parser.add_argument('--constraint', required=False, type=str, default='loose', help='loose or strict')
-    parser.add_argument('--seed', required=False, type=int, default=0, help='seed for retrieval data base')
-    parser.add_argument('--num_conversation', required=False, type=int, default=5, help='number of conversation round')
     args = parser.parse_args()
     args = vars(args)
 
     task_index = args['task_index']
-    outputfile = open(args['output_battery_file'], 'w')
 
     retrieval_DB = load_retrieval_DB(task_index)
-
-    num_correct = 0
-    num_all = 0
 
     app.run(debug=True)
