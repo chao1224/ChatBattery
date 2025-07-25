@@ -1,0 +1,48 @@
+# syntax=docker/dockerfile:1.4
+
+# 1. Base Image Selection
+FROM pytorch/pytorch:2.3.0-cuda12.1-cudnn8-devel
+
+# 2. Set CUDA_HOME environment variable to match the base image
+ENV CUDA_HOME=/usr/local/cuda-12.1
+
+# 3. Install git and set up the working directory
+WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# 4. Clone the repository into the WORKDIR
+RUN git clone https://github.com/chao1224/ChatBattery .
+
+# 5. Install Python dependencies from README.md
+RUN pip install --no-cache-dir \
+    pandas \
+    openai==0.28 \
+    python-Levenshtein \
+    pymatgen==2024.4.13 \
+    ase \
+    scikit-learn \
+    xgboost \
+    mp-api==0.41.2 \
+    Flask \
+    && pip install --no-cache-dir -e .
+
+# 6. Expose the port for the Flask web UI
+EXPOSE 5000
+
+# 7. Create an entrypoint script to handle API key injection and run the server
+COPY --chmod=755 <<'ENTRYPOINT' /app/entrypoint.sh
+#!/bin/sh
+set -eu
+: "${OPENAI_API_KEY?Error: OPENAI_API_KEY environment variable must be set.}"
+: "${MP_API_KEY?Error: MP_API_KEY environment variable must be set.}"
+sed -i "s|MP_api_key = 'xxx'|MP_api_key = '${MP_API_KEY}'|" ChatBattery/search_agent.py
+sed -i "s|app.run(debug=True)|app.run(host='0.0.0.0', port=5000, debug=True)|" main.py
+echo "Starting ChatBattery Flask server on http://0.0.0.0:5000"
+echo "Note: You must provide OPENAI_API_KEY and MP_API_KEY as environment variables."
+exec python main.py
+ENTRYPOINT
+
+# 8. Set the entrypoint for the container
+ENTRYPOINT ["/app/entrypoint.sh"]
