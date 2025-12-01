@@ -128,11 +128,15 @@ class Domain_Agent:
         coefficient_05 = 5   # for Mg, Al, Si, B, Zr, C, Be, Ca, Na, K, Sn, Sr
         coefficient_06 = 1   # for others
 
-        element_level_01_set = set(["Li"])
+        if task_index == 101:
+            element_level_01_set = set(["Li"])
+            element_level_05_set = set(["Mg", "Al", "Si", "B", "Zr", "C", "Be", "Ca", "Na", "K", "Sn", "Sr"])
+        elif task_index == 102:
+            element_level_01_set = set(["Na"])
+            element_level_05_set = set(["Mg", "Al", "Si", "B", "Zr", "C", "Be", "Ca", "Li", "K", "Sn", "Sr"])
         element_level_02_set = set(["Mn", "Co", "Ni"])
         element_level_03_set = set(["Fe", "Cu", "Zn", "V", "Cr", "Ti", "Mo"])
         element_level_04_set = set(["O", "P", "F", "S", "Cl", "Br", "I"])
-        element_level_05_set = set(["Mg", "Al", "Si", "B", "Zr", "C", "Be", "Ca", "Na", "K", "Sn", "Sr"])
         element_level_06_set = set(list(atomic_weights.keys())) - element_level_01_set - element_level_02_set - element_level_03_set - element_level_04_set - element_level_05_set
         
         distance = 0

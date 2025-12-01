@@ -58,6 +58,8 @@ def show_content(content, color=default_color):
 def load_retrieval_DB(task_index):
     if task_index == 101:
         DBfile = 'data/Li_battery/preprocessed.csv'
+    elif task_index == 102:
+        DBfile = 'data/Na_battery/preprocessed.csv'
     else:
         raise NotImplementedError
 
@@ -71,7 +73,10 @@ def problem_conceptualization(input_battery, condition, task_index):
     mode = condition[0]
 
     if mode == "initial":
-        task_index_prompt_template = "We have a Li cathode material FORMULA_PLACEHOLDER. Can you optimize it to develop new cathode materials with higher capacity and improved stability? You can introduce new elements from the following groups: carbon group, alkaline earth metals group, and transition elements, excluding radioactive elements; and incorporate new elements directly into the chemical formula, rather than listing them separately; and give the ratio of each element; and adjust the ratio of existing elements. My requirements are proposing five optimized battery formulations, listing them in bullet points (in asterisk *, not - or number or any other symbol), ensuring each formula is chemically valid and realistic for battery applications, and providing reasoning for each modification."
+        if task_index == 101:
+            task_index_prompt_template = "We have a Li cathode material FORMULA_PLACEHOLDER. Can you optimize it to develop new cathode materials with higher capacity and improved stability? You can introduce new elements from the following groups: carbon group, alkaline earth metals group, and transition elements, excluding radioactive elements; and incorporate new elements directly into the chemical formula, rather than listing them separately; and give the ratio of each element; and adjust the ratio of existing elements. My requirements are proposing five optimized battery formulations, listing them in bullet points (in asterisk *, not - or number or any other symbol), ensuring each formula is chemically valid and realistic for battery applications, and providing reasoning for each modification."
+        elif task_index == 102:
+            task_index_prompt_template = "We have a Na cathode material FORMULA_PLACEHOLDER. Can you optimize it to develop new cathode materials with higher capacity and improved stability? You can introduce new elements from the following groups: carbon group, alkaline earth metals group, and transition elements, excluding radioactive elements; and incorporate new elements directly into the chemical formula, rather than listing them separately; and give the ratio of each element; and adjust the ratio of existing elements. My requirements are proposing five optimized battery formulations, listing them in bullet points (in asterisk *, not - or number or any other symbol), ensuring each formula is chemically valid and realistic for battery applications, and providing reasoning for each modification."
         prompt = task_index_prompt_template.replace('FORMULA_PLACEHOLDER', input_battery)
 
 

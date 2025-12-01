@@ -38,6 +38,11 @@ class Rank_Agent:
         Could you compare the two Li cathode materials, {} and {}, and identify which one has a higher voltage vs. Li+/Li (V)?
         List the better one in the last line, marked by '*'.
             """
+        #     # NOTE: for Na
+        #     template = """
+        # Could you compare the two Na cathode materials, {} and {}, and identify which one has a higher voltage vs. Na+/Na (V)?
+        # List the better one in the last line, marked by '*'.
+        #     """
             i, j = total_formula_to_index[formula_01], total_formula_to_index[formula_02]
             prompt = template.format(formula_01, formula_02).strip()
 
